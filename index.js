@@ -7,6 +7,7 @@ const multer = require("multer");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); //json->object
+app.use("/uploads", express.static("uploads")); // /uploads 주소로 접속시 uploads 폴더에 접근권한 부여. 앞엔 경로, 뒤는 폴더 이름.
 
 let corsOptions = {
   origin: "*",
@@ -54,7 +55,7 @@ app.get("/view", (req, res) => {
   const id = req.query.id;
   // const sqlQuery = `SELECT * FROM board WHERE id=${req.query.id};`;
   const sqlQuery =
-    "SELECT title, content, writer, DATE_FORMAT(date, '%Y-%m-%d') AS date FROM board WHERE id=?;";
+    "SELECT title, content, writer, image_path, DATE_FORMAT(date, '%Y-%m-%d') AS date FROM board WHERE id=?;";
   db.query(sqlQuery, [id], (err, result) => {
     if (err) throw err;
     res.send(result);
